@@ -28,9 +28,12 @@ def get_books_in_library(library_name):
 def get_librarian_of_library(library_name):
     try:
         library = Library.objects.get(name=library_name)  # Fetch library directly
-        return library.librarian.name if hasattr(library, 'librarian') else f"No librarian assigned for {library_name}"
+        librarian = Librarian.objects.get(library=library)  # Get librarian using `.get()`
+        return librarian.name
     except Library.DoesNotExist:
-        return f"No librarian found for library {library_name}"
+        return f"No library found with name {library_name}"
+    except Librarian.DoesNotExist:
+        return f"No librarian assigned for {library_name}"
 
 # Example usage
 if __name__ == "__main__":
