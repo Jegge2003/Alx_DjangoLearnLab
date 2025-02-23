@@ -5,10 +5,9 @@ from .models import Book
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden  # ✅ Handle unauthorized access
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 import os
 from django.conf import settings
 from .models import UserProfile
@@ -71,26 +70,25 @@ def is_librarian(user):
 def is_member(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
-# 🔹 Admin Dashboard View
-@user_passes_test(is_admin, login_url='/login/')
-def admin_dashboard(request):
-    if not is_admin(request.user):
-        return HttpResponseForbidden("You are not authorized to access this page.")
-    return render(request, get_template_path('admin_view.html'), {'user': request.user})
 
-# 🔹 Librarian Dashboard View
-@user_passes_test(is_librarian, login_url='/login/')
-def librarian_dashboard(request):
-    if not is_librarian(request.user):
-        return HttpResponseForbidden("You are not authorized to access this page.")
-    return render(request, get_template_path('librarian_view.html'), {'user': request.user})
+# 🟢 View for Admin Users
+@login_required
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
 
-# 🔹 Member Dashboard View
-@user_passes_test(is_member, login_url='/login/')
-def member_dashboard(request):
-    if not is_member(request.user):
-        return HttpResponseForbidden("You are not authorized to access this page.")
-    return render(request, get_template_path('member_view.html'), {'user': request.user})
+# 🟢 View for Librarians
+@login_required
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+# 🟢 View for Members
+@login_required
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
+
 
 # 🔹 User Login View
 def user_login(request):
