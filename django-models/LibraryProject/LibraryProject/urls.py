@@ -25,6 +25,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from relationship_app.views import user_login, user_logout, user_register
 from relationship_app import views
 from relationship_app import admin_view, librarian_view, member_view
+from relationship_app.views import add_book, edit_book, delete_book
 
 # Temporary function-based view for the home page
 def home(request):
@@ -41,5 +42,8 @@ urlpatterns = [
     path('admin-dashboard/', admin_view.admin_dashboard, name='admin_dashboard'),
     path('librarian-dashboard/', librarian_view.librarian_dashboard, name='librarian_dashboard'),
     path('member-dashboard/', member_view.member_dashboard, name='member_dashboard'),
+    path('books/add/', add_book, name='add_book'),
+    path('books/edit/<int:pk>/', edit_book, name='edit_book'),
+    path('books/delete/<int:pk>/', delete_book, name='delete_book'),
 
 ]
