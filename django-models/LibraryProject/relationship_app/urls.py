@@ -20,6 +20,7 @@ from .views import list_books, LibraryDetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from .views import user_login, user_logout, user_register
 from . import views
+from . import admin_view, librarian_view, member_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),  # ✅ User registration
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),  # ✅ Built-in login view with custom template
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'), 
+    path('admin-dashboard/', admin_view.admin_dashboard, name='admin_dashboard'),
+    path('librarian-dashboard/', librarian_view.librarian_dashboard, name='librarian_dashboard'),
+    path('member-dashboard/', member_view.member_dashboard, name='member_dashboard'),
 ]
