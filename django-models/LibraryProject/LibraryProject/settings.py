@@ -62,7 +62,7 @@ ROOT_URLCONF = 'LibraryProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'relationship_app', 'library_detail.html'), os.path.join(BASE_DIR, 'relationship_app', 'library_books.html')],
+        'DIRS': [os.path.join(BASE_DIR, 'relationship_app')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
