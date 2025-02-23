@@ -40,7 +40,7 @@ def user_logout(request):
 # User Registration View
 def user_register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)  # ✅ UserCreationForm allows new users to register
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -48,5 +48,3 @@ def user_register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
-
-
