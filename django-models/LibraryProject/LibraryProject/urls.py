@@ -17,9 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from relationship_app.views import list_books, LibraryDetailView
+from django.http import HttpResponse  # Temporary home page
+
+# Temporary function-based view for the home page
+def home(request):
+    return HttpResponse("<h1>Welcome to the Library Project</h1>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home, name='home'),
     path('books/', list_books, name='list_books'),  # Function-based view
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # Class-based view
 ]
