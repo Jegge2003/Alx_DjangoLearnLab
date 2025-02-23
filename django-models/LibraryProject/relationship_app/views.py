@@ -37,12 +37,12 @@ def user_login(request):
             return redirect('list_books')  # Redirect to books list after login
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'relationship_app/login.html', {'form': form})
 
 # User Logout View
 def user_logout(request):
     logout(request)
-    return render(request, 'logout.html')
+    return render(request, 'relationship_app/logout.html')
 
 # User Registration View
 def register(request):
@@ -54,7 +54,7 @@ def register(request):
             return redirect('list_books')  # Redirect to books list after registration
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 
 # Helper function to get template path
