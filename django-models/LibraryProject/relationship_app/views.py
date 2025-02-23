@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from .models import Library
 from .models import Book
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 
@@ -39,7 +39,7 @@ def user_logout(request):
     return render(request, 'logout.html')
 
 # User Registration View
-def user_register(request):
+def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)  # ✅ UserCreationForm allows new users to register
         if form.is_valid():
