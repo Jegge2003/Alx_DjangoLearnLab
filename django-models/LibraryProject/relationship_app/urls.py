@@ -16,16 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from relationship_app.views import list_books, LibraryDetailView
 from django.http import HttpResponse  # Temporary home page
 from django.contrib import admin
 from django.urls import path
-from relationship_app.views import list_books, LibraryDetailView
+from .views import list_books
+from .views import LibraryDetailView
 from django.contrib.auth.views import LoginView, LogoutView
-from relationship_app.views import user_login, user_logout, user_register
-from relationship_app import views
-from relationship_app import admin_view, librarian_view, member_view
-from relationship_app.views import add_book, edit_book, delete_book
+from .views import user_login, user_logout, user_register
+from . import views
+from . import admin_view, librarian_view, member_view
+from .views import add_book, edit_book, delete_book
 
 # Temporary function-based view for the home page
 def home(request):
