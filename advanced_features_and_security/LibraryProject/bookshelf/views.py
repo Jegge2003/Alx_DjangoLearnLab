@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseForbidden
 from .models import Book
 from django.db.models import Q
+from .forms import BookForm  # Import the form
 
 @permission_required('relationship_app.can_view', raise_exception=True)
 def book_list(request):
@@ -43,3 +44,15 @@ def search_books(request):
     query = request.GET.get('title', '')
     books = Book.objects.filter(Q(title__icontains=query))
     return render(request, 'book_list.html', {'books': books})
+
+
+def add_book(request):
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("book_list")  # Redirect to the list of books
+    else:
+        form = BookForm()
+    
+    return render(request, "bookshelf/book_form.html", {"form": form})
