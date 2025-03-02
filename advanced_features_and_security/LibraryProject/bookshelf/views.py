@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseForbidden
 from .models import Book
+from django.db.models import Q
 
 @permission_required('relationship_app.can_view', raise_exception=True)
 def book_list(request):
@@ -36,3 +37,9 @@ def delete_book(request, book_id):
         book.delete()
         return render(request, 'success.html')
     return render(request, 'delete_book.html', {'book': book})
+
+
+def search_books(request):
+    query = request.GET.get('title', '')
+    books = Book.objects.filter(Q(title__icontains=query))
+    return render(request, 'book_list.html', {'books': books})

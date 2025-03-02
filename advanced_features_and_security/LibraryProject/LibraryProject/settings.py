@@ -131,3 +131,42 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+import os
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# Ensure the correct domain names for allowed hosts
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
+
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True  # Protects against XSS attacks
+X_FRAME_OPTIONS = 'DENY'  # Prevents clickjacking attacks
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME type sniffing
+
+# Enforce HTTPS for cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Enable CSRF protection
+CSRF_USE_SESSIONS = True
+
+# Content Security Policy (CSP)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "trusted-cdn.com")
+CSP_STYLE_SRC = ("'self'", "trusted-cdn.com")
+CSP_IMG_SRC = ("'self'", "trusted-cdn.com")
+CSP_CONNECT_SRC = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
+
+# Secure headers middleware (requires django-csp package)
+INSTALLED_APPS += ['csp']
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+# settings.py
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "trusted-cdn.com")
+CSP_STYLE_SRC = ("'self'", "trusted-cdn.com")
+CSP_IMG_SRC = ("'self'", "trusted-cdn.com")
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
