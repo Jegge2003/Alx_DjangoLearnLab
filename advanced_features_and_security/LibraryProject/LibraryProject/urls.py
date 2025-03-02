@@ -18,8 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import path, include  # Ensure 'include' is imported
+from bookshelf.views import book_list, add_book, edit_book, delete_book
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')), 
+    path('books/', book_list, name='book_list'),
+    path('books/add/', add_book, name='add_book'),
+    path('books/edit/<int:book_id>/', edit_book, name='edit_book'),
+    path('books/delete/<int:book_id>/', delete_book, name='delete_book'),
 ]
+
