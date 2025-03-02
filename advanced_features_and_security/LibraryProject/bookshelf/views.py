@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden
 from .models import Book
 from django.db.models import Q
 from .forms import BookForm  # Import the form
+from .forms import ExampleForm
 
 @permission_required('relationship_app.can_view', raise_exception=True)
 def book_list(request):
@@ -56,3 +57,16 @@ def add_book(request):
         form = BookForm()
     
     return render(request, "bookshelf/book_form.html", {"form": form})
+
+
+def example_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the form (e.g., save, send email, etc.)
+            return render(request, "bookshelf/example_success.html", {"form": form})
+    else:
+        form = ExampleForm()
+    
+    return render(request, "bookshelf/example_form.html", {"form": form})
+
