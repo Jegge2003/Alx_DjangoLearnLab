@@ -170,3 +170,18 @@ CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "trusted-cdn.com")
 CSP_STYLE_SRC = ("'self'", "trusted-cdn.com")
 CSP_IMG_SRC = ("'self'", "trusted-cdn.com")
 MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+# Enforce HTTPS for all requests
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to subdomains
+SECURE_HSTS_PRELOAD = True  # Allow browser preloading
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+
