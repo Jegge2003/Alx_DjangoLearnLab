@@ -41,9 +41,10 @@ INSTALLED_APPS = [
 
     #Third party
     'rest_framework',
+    'rest_framework.authtoken',
 
     #Local apps
-    'api'
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'api_project.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # Optional: for browsable API
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Default: Require authentication
+    ]
+}
+
 
 TEMPLATES = [
     {
