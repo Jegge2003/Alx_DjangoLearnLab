@@ -21,3 +21,23 @@
 ## Custom Behavior
 - `perform_create()` ensures custom logic on creation.
 - `perform_update()` allows hooks on update actions.
+
+# Book API - Advanced Querying Features
+
+## Filtering
+- Filter books by title, author, or publication year.
+- Example:
+  - `/api/books/?title=The Alchemist`
+  - `/api/books/?author=1`
+
+## Search
+- Search books by title or author name.
+- Example:
+  - `/api/books/?search=Python`
+
+## Ordering
+- Order books by title or publication year.
+- Example:
+  - `/api/books/?ordering=title`
+  - `/api/books/?ordering=-publication_year`
+
