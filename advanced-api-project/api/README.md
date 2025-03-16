@@ -41,3 +41,27 @@
   - `/api/books/?ordering=title`
   - `/api/books/?ordering=-publication_year`
 
+
+# Testing API Views for Books
+
+## How to Run Tests
+Run the following command:
+
+
+
+## What is Tested?
+- CRUD operations for Book model
+- Filtering by title, author, and publication year
+- Search by title and author's name
+- Ordering by title and publication year
+- Permissions and authentication
+
+## Example Endpoints Tested
+- `/api/books/` (GET, POST)
+- `/api/books/<pk>/` (GET)
+- `/api/books/<pk>/update/` (PUT)
+- `/api/books/<pk>/delete/` (DELETE)
+
+## Authenticated vs Unauthenticated
+- Unauthenticated users can only list and retrieve.
+- Only authenticated users can create, update, and delete books.
