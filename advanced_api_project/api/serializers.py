@@ -2,6 +2,18 @@ from rest_framework import serializers
 from .models import Author, Book
 from datetime import datetime
 
+"""
+This file defines serializers for the Author and Book models.
+
+BookSerializer:
+- Serializes the Book model fields.
+- Validates the publication year to ensure it is not in the future.
+
+AuthorSerializer:
+- Serializes the Author model fields.
+- Includes a nested BookSerializer to represent the author's books.
+- The books field is read-only and dynamically displays all related books for an author.
+"""
 #BookSerializer: Serializes Book model and adds custom validation for publication_year
 class BookSerializer(serializers.ModelSerializer):
 
