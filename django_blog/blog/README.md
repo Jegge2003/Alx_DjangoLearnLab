@@ -46,3 +46,24 @@ Let me know if you need:
 ✔ Categories/tags for posts  
 ✔ Profile pictures / Author bios  
 I'm here to help you polish it!
+
+# Comment System
+
+## Features
+- Users can leave comments on posts.
+- Comments can be edited or deleted by their authors.
+
+## How to Add a Comment
+- Navigate to a post.
+- Scroll to the comment section.
+- If logged in, fill out the form and submit.
+- If not logged in, you'll be prompted to login.
+
+## Permissions
+- Only authenticated users can comment.
+- Only the comment's author can edit or delete their comment.
+
+## URL Patterns
+- Add Comment: /post/<post_id>/comments/new/
+- Edit Comment: /comment/<pk>/edit/
+- Delete Comment: /comment/<pk>/delete/
