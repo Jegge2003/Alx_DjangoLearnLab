@@ -14,6 +14,8 @@ from django.db.models import Q
 from django.views.generic import ListView
 from taggit.models import Tag
 
+
+
 def home(request):
     return render(request, 'blog/home.html')
 # Registration View
@@ -185,13 +187,14 @@ def search_posts(request):
     return render(request, 'blog/search_results.html', context)
 
 
-class PostsByTagListView(ListView):
+class PostByTagListView(ListView):
     model = Post
-    template_name = 'blog/posts_by_tag.html'
+    template_name = 'blog/posts_by_tag.html'  # You'll create this template
     context_object_name = 'posts'
 
     def get_queryset(self):
-        self.tag = Tag.objects.get(slug=self.kwargs['tag_slug'])
+        # Get tag by slug from the URL
+        self.tag = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
         return Post.objects.filter(tags__in=[self.tag])
 
     def get_context_data(self, **kwargs):
