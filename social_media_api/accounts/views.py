@@ -1,6 +1,5 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate
@@ -11,10 +10,11 @@ from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 
 User = get_user_model()
 
+
 # Register View
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -26,10 +26,11 @@ class RegisterView(generics.GenericAPIView):
             "token": token.key
         })
 
+
 # Login View
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -41,11 +42,12 @@ class LoginView(generics.GenericAPIView):
             "token": token.key
         })
 
-# Profile View
+
+# Profile View (Only accessible by the logged-in user)
 class ProfileView(generics.RetrieveAPIView):
-    queryset = User.objects.all()  # ✅ CustomUser.objects.all() = User.objects.all()
+    queryset = User.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # ✅ Here
 
     def get_object(self):
         return self.request.user
@@ -53,7 +55,7 @@ class ProfileView(generics.RetrieveAPIView):
 
 # Follow another user
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])  # ✅ Here
 def follow_user(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
     if request.user == target_user:
@@ -64,7 +66,7 @@ def follow_user(request, user_id):
 
 # Unfollow a user
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])  # ✅ Here
 def unfollow_user(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
     request.user.following.remove(target_user)
