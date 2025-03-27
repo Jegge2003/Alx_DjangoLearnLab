@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 
 # Register View
@@ -46,7 +46,7 @@ class LoginView(generics.GenericAPIView):
 
 # Profile View (Only accessible by the logged-in user)
 class ProfileView(generics.RetrieveAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]  # ✅ Here
 
@@ -58,7 +58,7 @@ class ProfileView(generics.RetrieveAPIView):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])  # ✅ Here
 def follow_user(request, user_id):
-    target_user = get_object_or_404(User, id=user_id)
+    target_user = get_object_or_404(CustomUser, id=user_id)
     if request.user == target_user:
         return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
     request.user.following.add(target_user)
@@ -69,6 +69,6 @@ def follow_user(request, user_id):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])  # ✅ Here
 def unfollow_user(request, user_id):
-    target_user = get_object_or_404(User, id=user_id)
+    target_user = get_object_or_404(CustomUser, id=user_id)
     request.user.following.remove(target_user)
     return Response({"detail": f"You have unfollowed {target_user.username}."})
