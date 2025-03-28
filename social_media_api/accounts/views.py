@@ -8,6 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 
 from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
+from rest_framework import generics, permissions
+from .models import Post
+from .serializers import PostSerializer
 
 CustomUser = get_user_model()
 
@@ -52,6 +55,18 @@ class ProfileView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the users the current user follows
+        following_users = self.request.user.following.all()
+        # Return posts from followed users ordered by newest first
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
 
 
 # Follow another user

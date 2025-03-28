@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import PostSerializer
+from rest_framework import generics, permissions
 
 # Create your views here.
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -29,6 +30,19 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the users the current user follows
+        following_users = self.request.user.following.all()
+        # Return posts from followed users ordered by newest first
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
