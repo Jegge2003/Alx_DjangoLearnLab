@@ -7,6 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import PostSerializer
 from rest_framework import generics, permissions
+from rest_framework import status
+from .models import Post, Like
+from notifications.utils import create_notification  # You’ll create this next
+
 
 # Create your views here.
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -51,3 +55,22 @@ def feed(request):
     posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    if created:
+        create_notification(request.user, post.author, 'liked', post)
+        return Response({'message': 'Post liked!'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'You already liked this post.'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    Like.objects.filter(post=post, user=request.user).delete()
+    return Response({'message': 'Post unliked!'}, status=status.HTTP_200_OK)
+
